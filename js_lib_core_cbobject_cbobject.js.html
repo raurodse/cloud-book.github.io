@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: js/lib/core/cbobject/cbobject.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,58 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: js/lib/core/cbobject/cbobject.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Base object to components. This object include position, size, type and others common elemens
+ * @param {Object} objectdata Object base definition
+ * @param {Array} objectdata.position Object position on page
+ * @param {Array} objectdata.size Object size 
+ * @param {String} objectdata.type Object type . This is used to restore object when load project  
+ * @class CBObject
+ */
+function CBObject(objectdata){
+	this.position = typeof objectdata.position !== 'undefined' ? objectdata.position : [200,200];
+	this.size = typeof objectdata.size !== 'undefined' ? objectdata.size : [0,0];
+	this.idtype = typeof objectdata.idtype !== 'undefined' ? objectdata.idtype : "CBObject";
+}
+
+/**
+ * Render object to jQuery object to be included on page
+ * @return {jQuery}
+ */
+CBObject.prototype.editorView = function editorView() {
+	var aux = $(window.document.createElement('div'));
+	aux.css('left', this.position[0])
+	   .css('top', this.position[1])
+	   .addClass('draggable')
+	   .addClass('cbobject')
+	   .addClass('cbobject-editable')
+	   .css('position','relative');
+	return aux;
+};
+
+/**
+ * This string is return core to bind on button click event on editor view
+ * @param {jQuery} jquerycbo jQuery representation object that is included on targetcontent
+ * @param {CBOjbect} objectcbo CBObject that is stored on the project to later load project or export to other format.
+ * @return {String} Function string.
+ */
+CBObject.prototype.add_callback = function add_callback(jquerycbo,objectcbo) {
+	jquerycbo.draggable( {stop: function(event,ui){ objectcbo.position = [ui.position.left,ui.position.top]; }, scroll:true});
+};
 
 
-    <h3>CloudBook 0.2.0</h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+module.exports = CBObject;</code></pre>
+        </article>
+    </section>
 
 
 
